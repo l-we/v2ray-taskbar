@@ -74,13 +74,13 @@ namespace v2ray_taskbar
 		delegate void AppendTextDelegate(string text);
 		void AppendText(string text)
 		{
-			if (this.textBoxV2ray.InvokeRequired)
+			if (this.textBoxTaskbar.InvokeRequired)
 			{
 				Invoke(new AppendTextDelegate(AppendText), new object[] { text });
 			}
 			else
 			{
-				this.textBoxV2ray.AppendText(text);
+				this.textBoxTaskbar.AppendText(text);
 			}
 		}
 		// 最小化隐藏
@@ -100,6 +100,8 @@ namespace v2ray_taskbar
 				this.Visible = true;
 				this.WindowState = FormWindowState.Normal;
 				this.Activate();
+				this.textBoxTaskbar.SelectionStart = this.textBoxTaskbar.Text.Length;
+				this.textBoxTaskbar.ScrollToCaret();
 			}
 			else if (e.Button == MouseButtons.Left)
 			{
@@ -129,7 +131,7 @@ namespace v2ray_taskbar
 		void V2ray_Click(object sender, EventArgs e)
 		{
 			// 重载
-			this.textBoxV2ray.Clear();
+			this.textBoxTaskbar.Clear();
 			if (this.Visible == false)
 			{
 				this.Visible = true;
@@ -152,14 +154,14 @@ namespace v2ray_taskbar
 		// 清空 textBoxV2ray 内容
 		void TextBoxClear(object sender, EventArgs e)
 		{
-			this.textBoxV2ray.Clear();
+			this.textBoxTaskbar.Clear();
 		}
 		// 复制 textBoxV2ray 内容
 		void TextBoxCopy(object sender, EventArgs e)
 		{
-			if (this.textBoxV2ray.SelectedText != "")
+			if (this.textBoxTaskbar.SelectedText != "")
 			{
-				Clipboard.SetDataObject(this.textBoxV2ray.SelectedText);
+				Clipboard.SetDataObject(this.textBoxTaskbar.SelectedText);
 			}
 		}
 		// 默认隐藏

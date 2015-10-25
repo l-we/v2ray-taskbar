@@ -18,7 +18,7 @@ namespace v2ray_taskbar
 		private System.Windows.Forms.ContextMenuStrip contextMenuStripIcon;
 		private System.Windows.Forms.ToolStripMenuItem 重载ToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
-		private System.Windows.Forms.TextBox textBoxV2ray;
+		private System.Windows.Forms.TextBox textBoxTaskbar;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStripTextBox;
 		private System.Windows.Forms.ToolStripMenuItem 复制ToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
@@ -45,11 +45,12 @@ namespace v2ray_taskbar
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.notifyIconV2ray = new System.Windows.Forms.NotifyIcon(this.components);
 			this.contextMenuStripIcon = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.重载ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.textBoxV2ray = new System.Windows.Forms.TextBox();
+			this.textBoxTaskbar = new System.Windows.Forms.TextBox();
 			this.contextMenuStripTextBox = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,7 @@ namespace v2ray_taskbar
 			// notifyIconV2ray
 			// 
 			this.notifyIconV2ray.ContextMenuStrip = this.contextMenuStripIcon;
-			this.notifyIconV2ray.Icon = global::v2ray_taskbar.Properties.ResourceV2ray.v2ray;
+			this.notifyIconV2ray.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconV2ray.Icon")));
 			this.notifyIconV2ray.Text = "v2ray";
 			this.notifyIconV2ray.Visible = true;
 			this.notifyIconV2ray.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIconV2ray_MouseClick);
@@ -87,22 +88,22 @@ namespace v2ray_taskbar
 			this.退出ToolStripMenuItem.Text = "退出";
 			this.退出ToolStripMenuItem.Click += new System.EventHandler(this.Exit_Click);
 			// 
-			// textBoxV2ray
+			// textBoxTaskbar
 			// 
-			this.textBoxV2ray.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(49)))), ((int)(((byte)(52)))));
-			this.textBoxV2ray.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.textBoxV2ray.ContextMenuStrip = this.contextMenuStripTextBox;
-			this.textBoxV2ray.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textBoxV2ray.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBoxV2ray.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(226)))), ((int)(((byte)(228)))));
-			this.textBoxV2ray.Location = new System.Drawing.Point(0, 0);
-			this.textBoxV2ray.MaxLength = 0;
-			this.textBoxV2ray.Multiline = true;
-			this.textBoxV2ray.Name = "textBoxV2ray";
-			this.textBoxV2ray.ReadOnly = true;
-			this.textBoxV2ray.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.textBoxV2ray.Size = new System.Drawing.Size(784, 411);
-			this.textBoxV2ray.TabIndex = 1;
+			this.textBoxTaskbar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(49)))), ((int)(((byte)(52)))));
+			this.textBoxTaskbar.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.textBoxTaskbar.ContextMenuStrip = this.contextMenuStripTextBox;
+			this.textBoxTaskbar.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textBoxTaskbar.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.textBoxTaskbar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(226)))), ((int)(((byte)(228)))));
+			this.textBoxTaskbar.Location = new System.Drawing.Point(0, 0);
+			this.textBoxTaskbar.MaxLength = 0;
+			this.textBoxTaskbar.Multiline = true;
+			this.textBoxTaskbar.Name = "textBoxTaskbar";
+			this.textBoxTaskbar.ReadOnly = true;
+			this.textBoxTaskbar.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.textBoxTaskbar.Size = new System.Drawing.Size(784, 411);
+			this.textBoxTaskbar.TabIndex = 1;
 			// 
 			// contextMenuStripTextBox
 			// 
@@ -131,9 +132,9 @@ namespace v2ray_taskbar
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(784, 411);
-			this.Controls.Add(this.textBoxV2ray);
+			this.Controls.Add(this.textBoxTaskbar);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Icon = global::v2ray_taskbar.Properties.ResourceV2ray.v2ray;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "v2ray-taskbar";
