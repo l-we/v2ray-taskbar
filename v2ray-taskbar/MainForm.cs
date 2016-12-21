@@ -29,15 +29,13 @@ namespace v2ray_taskbar
 			InitializeComponent();
 			
 			Process[] processcollection = Process.GetProcessesByName("v2ray-taskbar");
-			if (processcollection.Length >= 2)
-			{
+			if (processcollection.Length >= 2) {
 				MessageBox.Show("应用程序已经在运行中。。");
 				this.notifyIconV2ray.Visible = false;
 				Environment.Exit(1);
-			}
-			else
-			{
+			} else {
 				this.V2ray_Process();
+				this.WatcherStrat();
 			}
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
@@ -46,25 +44,20 @@ namespace v2ray_taskbar
 		// 运行代理程序
 		void V2ray_Process()
 		{
-			try
-			{
+			try {
 				Process p = new Process();
 				p.StartInfo.FileName = "v2ray.exe";
 				p.StartInfo.UseShellExecute = false;
 				p.StartInfo.RedirectStandardOutput = true;
 				p.StartInfo.CreateNoWindow = true;
-				p.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
-					{
-						if (!String.IsNullOrEmpty(e.Data))
-						{
-							this.AppendText(e.Data + Environment.NewLine);
-						}
-					});
+				p.OutputDataReceived += new DataReceivedEventHandler((sender, e) => {
+					if (!String.IsNullOrEmpty(e.Data)) {
+						this.AppendText(e.Data + Environment.NewLine);
+					}
+				});
 				p.Start();
 				p.BeginOutputReadLine();
-			}
-			catch (Exception)
-			{
+			} catch (Exception) {
 				MessageBox.Show("请检查当前目录下是否有 v2ray.exe 程序。。");
 				this.notifyIconV2ray.Visible = false;
 				Environment.Exit(0);
@@ -74,20 +67,16 @@ namespace v2ray_taskbar
 		delegate void AppendTextDelegate(string text);
 		void AppendText(string text)
 		{
-			if (this.textBoxTaskbar.InvokeRequired)
-			{
+			if (this.textBoxTaskbar.InvokeRequired) {
 				Invoke(new AppendTextDelegate(AppendText), new object[] { text });
-			}
-			else
-			{
+			} else {
 				this.textBoxTaskbar.AppendText(text);
 			}
 		}
 		// 最小化隐藏
 		void V2ray_SizeChanged(object sender, EventArgs e)
 		{
-			if (this.WindowState == FormWindowState.Minimized)
-			{
+			if (this.WindowState == FormWindowState.Minimized) {
 				this.Hide();
 				this.Visible = false;
 			}
@@ -95,16 +84,13 @@ namespace v2ray_taskbar
 		// 窗体显示
 		void notifyIconV2ray_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (this.Visible == false && e.Button == MouseButtons.Left)
-			{
+			if (this.Visible == false && e.Button == MouseButtons.Left) {
 				this.Visible = true;
 				this.WindowState = FormWindowState.Normal;
 				this.Activate();
 				this.textBoxTaskbar.SelectionStart = this.textBoxTaskbar.Text.Length;
 				this.textBoxTaskbar.ScrollToCaret();
-			}
-			else if (e.Button == MouseButtons.Left)
-			{
+			} else if (e.Button == MouseButtons.Left) {
 				this.Hide();
 				this.Visible = false;
 			}
@@ -113,41 +99,36 @@ namespace v2ray_taskbar
 		void Exit_Click(object sender, EventArgs e)
 		{
 			this.notifyIconV2ray.Visible = false;
-			try
-			{
+			try {
 				Process[] killp = Process.GetProcessesByName("v2ray");
-				foreach (System.Diagnostics.Process p in killp)
-				{
+				foreach (System.Diagnostics.Process p in killp) {
 					p.Kill();
 				}
 				Environment.Exit(0);
-			}
-			catch (Exception)
-			{
+			} catch (Exception) {
 				Environment.Exit(0);
 			}
 		}
 		// 重载后台程序
 		void V2ray_Click(object sender, EventArgs e)
 		{
-			// 重载
+			this.Reloaded();
+		}
+		// 重载
+		void Reloaded()
+		{
 			this.textBoxTaskbar.Clear();
-			if (this.Visible == false)
-			{
+			if (this.Visible == false) {
 				this.Visible = true;
 				this.WindowState = FormWindowState.Normal;
 				this.Activate();
 			}
-			try
-			{
+			try {
 				Process[] killp = Process.GetProcessesByName("v2ray");
-				foreach (System.Diagnostics.Process p in killp)
-				{
+				foreach (System.Diagnostics.Process p in killp) {
 					p.Kill();
 				}
-			}
-			finally
-			{
+			} finally {
 				this.V2ray_Process();
 			}
 		}
@@ -159,8 +140,7 @@ namespace v2ray_taskbar
 		// 复制 textBoxV2ray 内容
 		void TextBoxCopy(object sender, EventArgs e)
 		{
-			if (this.textBoxTaskbar.SelectedText != "")
-			{
+			if (this.textBoxTaskbar.SelectedText != "") {
 				Clipboard.SetDataObject(this.textBoxTaskbar.SelectedText);
 			}
 		}
@@ -169,6 +149,24 @@ namespace v2ray_taskbar
 		{
 			this.Hide();
 			this.Visible = false;
+		}
+		// 监控文件修改
+		void WatcherStrat()
+		{
+			FileSystemWatcher watcher = new FileSystemWatcher();
+			watcher.Path = Application.StartupPath;
+			watcher.Filter = "config.json";
+			watcher.NotifyFilter = NotifyFilters.LastWrite;
+			watcher.SynchronizingObject = this;
+			watcher.Changed += new FileSystemEventHandler(OnChanged);
+			watcher.EnableRaisingEvents = true;
+		}
+		void OnChanged(object source, FileSystemEventArgs e)
+		{
+			try {
+				this.Reloaded();
+			} catch (Exception) {
+			}
 		}
 	}
 }
