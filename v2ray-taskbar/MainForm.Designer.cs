@@ -102,7 +102,7 @@ namespace v2ray_taskbar
 			this.textBoxTaskbar.Name = "textBoxTaskbar";
 			this.textBoxTaskbar.ReadOnly = true;
 			this.textBoxTaskbar.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.textBoxTaskbar.Size = new System.Drawing.Size(784, 411);
+			this.textBoxTaskbar.Size = new System.Drawing.Size(804, 421);
 			this.textBoxTaskbar.TabIndex = 1;
 			// 
 			// contextMenuStripTextBox
@@ -131,9 +131,8 @@ namespace v2ray_taskbar
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(784, 411);
+			this.ClientSize = new System.Drawing.Size(804, 421);
 			this.Controls.Add(this.textBoxTaskbar);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
