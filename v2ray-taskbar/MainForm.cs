@@ -21,6 +21,8 @@ namespace v2ray_taskbar
 	/// </summary>
 	public partial class MainForm : Form
 	{
+        static string CurrentConfig = "config.json";
+        static FileInfo[] ConfigList;
 		public MainForm()
 		{
 			//
@@ -30,13 +32,20 @@ namespace v2ray_taskbar
 			
 			Process[] processcollection = Process.GetProcessesByName("v2ray-taskbar");
 			if (processcollection.Length >= 2) {
-				MessageBox.Show("应用程序已经在运行中。。");
+				MessageBox.Show("应用程序已经在运行中...");
 				this.notifyIconV2ray.Visible = false;
 				Environment.Exit(1);
 			} else {
 				this.V2ray_Process();
 				this.WatcherStrat();
 			}
+
+            RefreshConfigList();
+            if (!File.Exists("config.json") && ConfigList.Length!=0)
+            {
+                CurrentConfig = ConfigList[0].Name;
+            }
+            RefreshUI();
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
@@ -47,7 +56,9 @@ namespace v2ray_taskbar
 			try {
 				Process p = new Process();
 				p.StartInfo.FileName = "v2ray.exe";
-				p.StartInfo.UseShellExecute = false;
+                p.StartInfo.Arguments = $"-config \"{CurrentConfig}\"";
+                this.AppendText("Current Config:" + CurrentConfig+"\n");
+                p.StartInfo.UseShellExecute = false;
 				p.StartInfo.RedirectStandardOutput = true;
 				p.StartInfo.CreateNoWindow = true;
 				p.OutputDataReceived += new DataReceivedEventHandler((sender, e) => {
@@ -58,7 +69,7 @@ namespace v2ray_taskbar
 				p.Start();
 				p.BeginOutputReadLine();
 			} catch (Exception) {
-				MessageBox.Show("请检查当前目录下是否有 v2ray.exe 程序。。");
+				MessageBox.Show("请检查当前目录下是否有 v2ray.exe 程序...");
 				this.notifyIconV2ray.Visible = false;
 				Environment.Exit(0);
 			}
@@ -168,5 +179,47 @@ namespace v2ray_taskbar
 			} catch (Exception) {
 			}
 		}
-	}
+
+        void RefreshConfigList()
+        {
+            DirectoryInfo folder = new DirectoryInfo(Application.StartupPath);
+            ConfigList = folder.GetFiles("*.json");
+
+            ConfigToolStripMenuItem.DropDownItems.Clear();
+            foreach (var fileInfo in ConfigList)
+            {
+                ConfigToolStripMenuItem.DropDownItems.Add(fileInfo.Name, null, ConfigItem_OnClick);
+            }
+        }
+
+        private void ConfigItem_OnClick(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            CurrentConfig = menuItem.Text;
+            Reloaded();
+
+        }
+        void RefreshUI()
+        {
+
+            foreach (ToolStripMenuItem item in ConfigToolStripMenuItem.DropDownItems)
+            {
+
+                if (item.Text == CurrentConfig)
+                {
+                    item.Checked = true;
+                }
+                else
+                {
+                    item.Checked = false;
+                }
+            }
+        }
+
+        private void ConfigToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            RefreshConfigList();
+            RefreshUI();
+        }
+    }
 }
